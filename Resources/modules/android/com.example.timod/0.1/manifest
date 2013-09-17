@@ -1,0 +1,18 @@
+#
+# this is your module manifest and used by Titanium
+# during compilation, packaging, distribution, etc.
+#
+version: 0.1
+apiversion: 2
+description: My module
+author: Your Name
+license: Specify your license
+copyright: Copyright (c) 2013 by Your Company
+
+
+# these should not be edited
+name: TIMOD
+moduleid: com.example.timod
+guid: 2a8df638-8252-4d00-bd03-b7ece26c365d
+platform: android
+minsdk: 3.1.2.GA
