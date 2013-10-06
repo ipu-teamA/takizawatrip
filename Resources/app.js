@@ -77,7 +77,7 @@ var button = Ti.UI.createButton({
    	Ti.App.Properties.setInt('id',user_id);// これでidを端末に記憶する。
     var main_win = Titanium.UI.createWindow({
      url:'takizawa_trip.js',
-     exitOnClose:false,　// 次のウインドウだけを閉じたい
+     exitOnClose:false, // 次のウインドウだけを閉じたい
      user_id:user_id
     });
     main_win.open();
@@ -110,8 +110,8 @@ button2.addEventListener('click', function(e){
 }
 else{
 	var main_win = Titanium.UI.createWindow({
-     url:'takizawa_trip.js',
-     user_id:id
+     url:'takizawa_trip.js'
+     //user_id:id
     });
     main_win.open();
 }
