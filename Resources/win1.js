@@ -8,30 +8,63 @@ var mapView = Ti.UI.createView();
 
 //スポット情報の挿入
 var spot = [];
-(function(){
- var main = Ti.Network.createHTTPClient();
- var url = "http://www31092u.sakura.ne.jp/~g031i043/takizawa/main.php";
- main.open("GET", url);
- main.setRequestHeader('Content-type', 'application/json; charset=utf-8');
- main.onload = function() {
- Ti.API.info("Received text: " + this.responseText);
- var spots = JSON.parse(this.responseText);
- for(var i = 0; i < spots.length; i++) {
-   spot[i] = Ti.Map.createAnnotation({
-	   latitude:spots[i].spot_gps_lat, // 緯度
-	   longitude:spots[i].spot_gps_lon, // 経度
-	   title:spots[i].spot_name,
-	   spot_id:spots[i].spot_id,
-	   animate:true,
-	   pincolor:Titanium.Map.ANNOTATION_RED, // ピン色は指定なしだとiOS[RED], Android[BLUE]
-	   bubbleParent: false,//イベントの伝播を防ぐ
- });
- map.addAnnotation(spot[i]); //ピンがたつ
- Ti.API.info(spots[i].spot_name);
- Ti.API.info(spots[i].spot_id);
-  };
- }
- main.send();
+(function() {
+	var ds = {};
+	var picture = Ti.Network.createHTTPClient();
+	var url = "http://www31092u.sakura.ne.jp/~g031i043/takizawa/picture.php/" + user_id;
+	picture.open("GET", url, false);
+	picture.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+	//picture = JSON.parse(this.responseText);
+	picture.onload = function() {
+		ds = JSON.parse(this.responseText);
+		Ti.API.info("ds: " + JSON.stringify(ds));
+		//スポット情報の挿入
+
+			var spot = [];
+			(function() {
+				//Ti.API.info("ds.spot_name: " + ds[1].spot_name);
+				var main = Ti.Network.createHTTPClient();
+				var url = "http://www31092u.sakura.ne.jp/~g031i043/takizawa/main.php";
+				main.open("GET", url);
+				main.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+				main.onload = function() {
+					Ti.API.info("Received text: " + this.responseText);
+					var spots = JSON.parse(this.responseText);
+					for (var i = 0; i < spots.length; i++) {
+						for(var j = 0; j < ds.length; j++) {
+							if(ds[j].spot_name == spots[i].spot_name){
+								spot[i] = Ti.Map.createAnnotation({
+									latitude : spots[i].spot_gps_lat, // 緯度
+									longitude : spots[i].spot_gps_lon, // 経度
+									title : spots[i].spot_name,
+									animate : true,
+									pincolor : Titanium.Map.ANNOTATION_GREEN, // ピン色は指定なしだとiOS[RED], Android[BLUE]
+									bubbleParent : false,
+								});
+								break;
+							}
+							else {
+								spot[i] = Ti.Map.createAnnotation({
+									latitude : spots[i].spot_gps_lat, // 緯度
+									longitude : spots[i].spot_gps_lon, // 経度
+									title : spots[i].spot_name,
+									animate : true,
+									pincolor : Titanium.Map.ANNOTATION_RED, // ピン色は指定なしだとiOS[RED], Android[BLUE]
+									bubbleParent : false,
+								});
+							}
+						}
+						map.addAnnotation(spot[i]);
+						//ピンがたつ
+						Ti.API.info(spots[i].spot_name);
+					};
+				}
+				main.send();
+			})(); 
+
+	}
+
+	picture.send();
 })();
 
 // ここまではスポットの位置情報取得
