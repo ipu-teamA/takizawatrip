@@ -1,10 +1,9 @@
 <?php
-date_default_timezone_set('Asia/Tokyo');
-//# ↑ タイムゾーンをセット
+date_default_timezone_set('Asia/Tokyo');//時間を日本に合わせる
+
 $str = explode("/", $_SERVER["REQUEST_URI"]);
-$name = isset($str[4]) ? htmlspecialchars($str[4], ENT_QUOTES) : "no name";
+$name = isset($str[4]) ? htmlspecialchars($str[4], ENT_QUOTES) : "no name";//issset関数で中身が入っているか判断
 $pass = isset($str[5]) ? htmlspecialchars($str[5], ENT_QUOTES) : "no pass";
-//# ↑ GET送信を処理。三項演算子を用いて、中身が入っていないときは入っていないことを明示的にしている。isset関数は、中身が入っているか判断している
 
 $mysql = mysql_connect("localhost", "g031i043", "g031i043!g031i043");//DB接続
 
@@ -25,36 +24,28 @@ if (isset($name) && isset($pass)) {
 		while ($tmp = mysql_fetch_assoc($result)) {//データがなくなるまで	
 			if($name == $tmp["user_name"]) {
 				if (sha1($pass) == $tmp["password"]) {
-					$json_array = array(
+					$json_array = array(//JSON形式にする
 						'time' => date("Y-m-d H:i:s"),
 						'name' => $name,
 						'pass' => $pass,
 						'user_id' => $tmp["user_id"]
 					);
-					//# ↑ JSON 形式にする
 
-					header("Content-Type: text/javascript; charset=utf-8");
-					//# ↑ 半分おまじない。JSONで送りますよという合図
+					header("Content-Type: text/javascript; charset=utf-8");//JSON形式で送るための記述
 
 					$encode = json_encode($json_array);
 
-					echo $encode;
-					//# ↑ JSON 形式にエンコードしてechoでGET送信
-					//$decode = json_decode($encode);
-
-					//var_dump($decode);
+					echo $encode;//JSON形式にエンコードしてechoでGET送信
 				}
 				else {
-					$json_array = array(
+					$json_array = array(//JSON形式にする
 						'time' => date("Y-m-d H:i:s"),
 						'name' => $name,
 						'pass' => $pass,
 						'user_id' => 'error'
 					);
-					//# ↑ JSON 形式にする
 
-					header("Content-Type: text/javascript; charset=utf-8");
-					//# ↑ 半分おまじない。JSONで送りますよという合図
+					header("Content-Type: text/javascript; charset=utf-8");//JSON形式で送るための記述
 
 					$encode = json_encode($json_array);
 

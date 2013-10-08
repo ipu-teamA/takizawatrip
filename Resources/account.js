@@ -24,7 +24,7 @@ var win = Ti.UI.currentWindow;
 	});
 	// 送信ボタン
 	var button3 = Ti.UI.createButton({
-		title: 'アカウント登録',
+		title: '登録',
 		top: '45%',
 		left: '22%',
 		width: '40%',
@@ -58,8 +58,13 @@ var win = Ti.UI.currentWindow;
 			Ti.API.info("Received text: " + this.responseText);
 			var new_user = JSON.parse(this.responseText);
 			var new_user_id = new_user.user_id;
+			if(new_user_id == "error"){
+				alert("エラー");
+			}
+			else{
 			Ti.App.Properties.setInt('id', new_user_id); //登録したユーザーのidを端末登録
 			var id = Ti.App.Properties.getInt('id'); //端末に登録したidの呼び出し
+			}
 			var labelNewUserid = Titanium.UI.createLabel({
 				text:new_user_id,
 				font:{fontSize:20,fontFamily:'Helvetica Neue'},
@@ -75,8 +80,12 @@ var win = Ti.UI.currentWindow;
 			url:'takizawa_trip.js',
 			user_id:id
 		});
+		
+		Ti.API.info("id::::"+ id);
+		
+		if(id != null){
 		main_win.open();
-		//win.close();
+		}
 	});
 	//戻るボタンが押された時の処理
 	button4.addEventListener('click', function(e){
