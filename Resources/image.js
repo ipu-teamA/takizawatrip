@@ -51,6 +51,7 @@ Ti.API.info(lat+'こんにちは' + lon);
 function selectPhotosByLocation(targetLat, targetLon, targetDistance) {
 	var findfile = require('com.example.timod');
 	var ImageFactory = require("fh.imagefactory");
+	var ImageAsResized = require("ImageAsResized-master");
 	var list = findfile.get_all_filelist();
 	var exifTags = {
 		'Date/time' : ImageFactory.TAG_DATETIME,
@@ -104,7 +105,7 @@ function selectPhotosByLocation(targetLat, targetLon, targetDistance) {
 			}
 			// 連想配列として写真へのパス、緯度経度を格納
 			exifPhotos.push({
-				path : list[i],
+				path : ImageAsResized.imageAsResized(300, 400, list[i], 0),
 				lat : geoLat,
 				lon : geoLon
 			});
@@ -141,14 +142,16 @@ check.sort(
 var tablerow = [];
 var row_view = [];
 var image = [];
+var path = [];
 if(check.length){
 for(var i = 0; i < check.length && i < 5; i++){
     image[i] = Ti.UI.createImageView({
-   		image: "file://" + check[i].path,
+   		image: /*"file://" +*/ check[i].path,
         width: '100%',
         height:'200px',
         image_id: i,
     });
+    path[i] = /*"file://" +*/ check[i].path;
     row_view[i] = Ti.UI.createView();
     row_view[i].add(image[i]);
     tablerow[i] = Ti.UI.createTableViewRow({});
