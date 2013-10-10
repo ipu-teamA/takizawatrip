@@ -113,37 +113,59 @@ scrollView.add(view3);
 				var spots = JSON.parse(this.responseText);
 				
 				//ここから画像表示プログラム
-				for (var i = 0, k = 15; i < spots.length / 3; i++, k += 110) {
+				for (var i = 0, k = 15; i <= spots.length / 3; i++, k += 110) {
 					for (var j = 0; j < 3; j++) {
+						if(i * 3 + j >= spots.length) {
+							break;
+						}
 						pic_name[i * 3 + j] = spots[i * 3 + j].spot_name;
-						for(var x = 0; x < my_picture.length; x++) {
-							if(spots[i * 3 + j].spot_name == my_picture[x].spot_name) {
-								pic_path[i * 3 + j] = path + my_picture[i * 3 + j].picture_path;
+						
+						if (my_picture.length != 0) {
+							for (var x = 0; x < my_picture.length; x++) {
+								if (spots[i * 3 + j].spot_name == my_picture[x].spot_name) {
+									pic_path[i * 3 + j] = path + my_picture[i * 3 + j].picture_path;
+									photo[i * 3 + j] = Ti.UI.createImageView({
+										image : pic_path[i * 3 + j],
+										width : '90',
+										height : '70',
+										top : k,
+										fullscreen : false,
+										id : i * 3 + j,
+										image_name : spots[i * 3 + j].spot_name//my_picture[i * 3 + j].picture_path
+									});
+									break;
+								}
 								photo[i * 3 + j] = Ti.UI.createImageView({
-									image : pic_path[i * 3 + j],
+									image : no_image_path,
 									width : '90',
 									height : '70',
+									borderWidth : 1,
+									borderColor : '#000',
 									top : k,
 									fullscreen : false,
 									id : i * 3 + j,
 									image_name : spots[i * 3 + j].spot_name//my_picture[i * 3 + j].picture_path
 								});
-								break;
 							}
-							photo[i * 3 + j] = Ti.UI.createImageView({
-								image : no_image_path,
-								width : '90',
-								height : '70',
-								top : k,
-								fullscreen : false,
-								id : i * 3 + j,
-								image_name : spots[i * 3 + j].spot_name//my_picture[i * 3 + j].picture_path
-							});
 						}
+						else {
+							photo[i * 3 + j] = Ti.UI.createImageView({
+									image : no_image_path,
+									width : '90',
+									height : '70',
+									borderWidth : 1,
+									borderColor : '#000',
+									top : k,
+									fullscreen : false,
+									id : i * 3 + j,
+									image_name : spots[i * 3 + j].spot_name//my_picture[i * 3 + j].picture_path
+								});
+						}
+
 						label[i * 3 + j] = Ti.UI.createLabel({
 							text : pic_name[i * 3 + j],
 							top : k + 75,
-							font: { fontSize:10 },
+							font: { fontSize:9 },
 							color : 'black',
 							layout : 'absolute'
 						});
@@ -155,8 +177,8 @@ scrollView.add(view3);
 							case 1:
 								break;
 							case 2:
-								photo[i * 3 + j].left = '70%';
-								label[i * 3 + j].left = '73%';
+								photo[i * 3 + j].right = '2.5%';
+								label[i * 3 + j].right = '6.0%';
 								break;
 						}
 						scrollView.add(photo[i * 3 + j]);

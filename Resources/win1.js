@@ -7,7 +7,7 @@ var user_id = win.user_id;
 var mapView = Ti.UI.createView();
 
 //スポット情報の挿入
-var spot = [];
+var spot = {} ;
 (function() {
 	var ds = {};
 	var picture = Ti.Network.createHTTPClient();
@@ -30,30 +30,44 @@ var spot = [];
 				main.onload = function() {
 					Ti.API.info("Received text: " + this.responseText);
 					var spots = JSON.parse(this.responseText);
+					Ti.API.info("ds.length:" + ds.length);
+					Ti.API.info("spots.length:" + spots.length);
 					for (var i = 0; i < spots.length; i++) {
-						for(var j = 0; j < ds.length; j++) {
-							if(ds[j].spot_name == spots[i].spot_name){
-								spot[i] = Ti.Map.createAnnotation({
-									latitude : spots[i].spot_gps_lat, // 緯度
-									longitude : spots[i].spot_gps_lon, // 経度
-									title : spots[i].spot_name,
-									animate : true,
-									pincolor : Titanium.Map.ANNOTATION_GREEN, // ピン色は指定なしだとiOS[RED], Android[BLUE]
-									bubbleParent : false,
-								});
-								break;
+						if (ds.length != 0) {
+							for (var j = 0; j < ds.length; j++) {
+								if (ds[j].spot_name == spots[i].spot_name) {
+									spot[i] = Ti.Map.createAnnotation({
+										latitude : spots[i].spot_gps_lat, // 緯度
+										longitude : spots[i].spot_gps_lon, // 経度
+										title : spots[i].spot_name,
+										animate : true,
+										pincolor : Titanium.Map.ANNOTATION_GREEN, // ピン色は指定なしだとiOS[RED], Android[BLUE]
+										bubbleParent : false,
+									});
+									break;
+								} else {
+									spot[i] = Ti.Map.createAnnotation({
+										latitude : spots[i].spot_gps_lat, // 緯度
+										longitude : spots[i].spot_gps_lon, // 経度
+										title : spots[i].spot_name,
+										animate : true,
+										pincolor : Titanium.Map.ANNOTATION_RED, // ピン色は指定なしだとiOS[RED], Android[BLUE]
+										bubbleParent : false,
+									});
+								}
 							}
-							else {
-								spot[i] = Ti.Map.createAnnotation({
-									latitude : spots[i].spot_gps_lat, // 緯度
-									longitude : spots[i].spot_gps_lon, // 経度
-									title : spots[i].spot_name,
-									animate : true,
-									pincolor : Titanium.Map.ANNOTATION_RED, // ピン色は指定なしだとiOS[RED], Android[BLUE]
-									bubbleParent : false,
-								});
-							}
+						} else {
+							spot[i] = Ti.Map.createAnnotation({
+								latitude : spots[i].spot_gps_lat, // 緯度
+								longitude : spots[i].spot_gps_lon, // 経度
+								title : spots[i].spot_name,
+								animate : true,
+								pincolor : Titanium.Map.ANNOTATION_RED, // ピン色は指定なしだとiOS[RED], Android[BLUE]
+								bubbleParent : false,
+							});
 						}
+
+						Ti.API.info(JSON.stringify(spot));
 						map.addAnnotation(spot[i]);
 						//ピンがたつ
 						Ti.API.info(spots[i].spot_name);
@@ -96,8 +110,7 @@ longitude: longitude,
 });
    map.addAnnotation(currentPos);
 */
-
-        　　 map.show(); // 隠していた地図を表示する
+			map.show(); // 隠していた地図を表示する
             map.setLocation({   // 現在地まで地図をスクロールする
             latitude:latitude,
             longitude:longitude,
