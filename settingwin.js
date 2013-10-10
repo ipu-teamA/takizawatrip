@@ -1,5 +1,5 @@
 //win4の内容を記述
-
+/*
 var win = Ti.UI.currentWindow;
 
 // viewを作ります
@@ -87,3 +87,4 @@ view15.add(onoff2);
 
 // viewをwinに追加します
 win.add(view15);
+*/
