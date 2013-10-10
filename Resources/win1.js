@@ -20,6 +20,7 @@ var spot = [];
    spot[i] = Ti.Map.createAnnotation({
 	   latitude:spots[i].spot_gps_lat, // 緯度
 	   longitude:spots[i].spot_gps_lon, // 経度
+	   subtitle:spots[i].area_name + "エリア",
 	   title:spots[i].spot_name,
 	   spot_id:spots[i].spot_id,
 	   animate:true,
@@ -44,38 +45,64 @@ var map = Ti.Map.createView({
     // annotationsで作ったピンを地図に追加 カンマつなぎで複数追加可能
 });
 Titanium.Geolocation.purpose = 'サンプル';
-Titanium.Geolocation.getCurrentPosition(
-	 function(e) {
-  if(!e.success || e.error){
-//   alert('位置情報が取得できませんでした');
-   return;
-  }
-  // 現在地をセット
-  latitude = e.coords.latitude;
-  longitude = e.coords.longitude;
-  // 現在地を動的に表示する
-  var currentPos = Titanium.Map.createAnnotation({
-   latitude: latitude,
-   longitude: longitude,
-   //pincolor: Titanium.Map.ANNOTATION_PURPLE,
-   //animate: true
-  });
-  //map.addAnnotation(currentPos);
-  map.show(); // 隠していた地図を表示する
-  map.setLocation({   // 現在地まで地図をスクロールする
-   latitude:latitude,
-   longitude:longitude,
-   latitudeDelta:0.1,
-   longitudeDelta:0.1
-   });
-   });
+Titanium.Geolocation.getCurrentPosition(function(e) {
+if(!e.success || e.error){
+alert('位置情報が取得できませんでした');
+return;
+}
+// 現在地をセット
+latitude = e.coords.latitude;
+longitude = e.coords.longitude;
+// 現在地を動的に表示する
+
+/*
+var currentPos = Titanium.Map.createAnnotation({
+latitude: latitude,
+longitude: longitude,
+//pincolor: Titanium.Map.ANNOTATION_PURPLE,
+//animate: true
+});
+   map.addAnnotation(currentPos);
+*/
+
+        　　 map.show(); // 隠していた地図を表示する
+            map.setLocation({   // 現在地まで地図をスクロールする
+            latitude:latitude,
+            longitude:longitude,
+            latitudeDelta:0.01,
+            longitudeDelta:0.01
+            });
+});
 
 mapView.add(map); // mapViewにmapをadd
+Titanium.Geolocation.addEventListener('location',function(e)
+{
+    //alert("latitude");
+    if (e.error)
+    {
+        // manage the error
+        return;
+    }
+    /*
+    var longitude = e.coords.longitude;
+    var latitude = e.coords.latitude;
+    var altitude = e.coords.altitude;
+    var heading = e.coords.heading;
+    var accuracy = e.coords.accuracy;
+    var speed = e.coords.speed;
+    var timestamp = e.coords.timestamp;
+    var altitudeAccuracy = e.coords.altitudeAccuracy;
+    // again we use the gathered data.
+    Ti.App.glbGeoData = {_curLatitude:latitude, _curLongitude:longitude};
+    */
+});
+
+
  map.addEventListener('click', function(e){
     // ピンのタイトルをタップしたときに画面表示
   Ti.API.info('click');
-  if(e.clicksource == 'title'){
-    var dainyuu = e.title;
+  if(e.clicksource == 'title' || e.clicksource == 'subtitle'){
+    var dainyuu = e.title; // ここでクリックされたタイトルの情報をわかるようにしている。
     Ti.API.info(e.latitude + '緯度');
     Ti.API.info(e.longitude + '経度');
     Ti.API.info(e.annotation.spot_id);//この場合はannotationでスポットIDを得られる
@@ -99,4 +126,3 @@ mapView.add(map); // mapViewにmapをadd
 });
 
 win.add(mapView); // winにmapViewをadd
-

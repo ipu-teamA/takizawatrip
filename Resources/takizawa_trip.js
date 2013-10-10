@@ -63,23 +63,24 @@ var tab3 = Titanium.UI.createTab({
     window:win3
 });
 
-var win4 = Titanium.UI.createWindow({
+/*設定画面の一時削除
+var settingwin = Titanium.UI.createWindow({
     title:'滝沢トリップ',
     backgroundColor:'#fff',
     exitOnClose: true,
     fullscreen: false,
-    url: 'win4.js'
+    url: 'settingwin.js'
 });
 
 var tab4 = Titanium.UI.createTab({
     icon:'KS_nav_ui.png',
     title:'設定',
-    window:win4
+    window:settingwin
 });
-
+*/
 tabGroup.addTab(tab1);
 tabGroup.addTab(tab2);
 tabGroup.addTab(tab3);
-tabGroup.addTab(tab4);
+//tabGroup.addTab(tab4);
 
 tabGroup.open();
