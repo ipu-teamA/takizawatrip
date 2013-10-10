@@ -39,7 +39,7 @@
     <modules>
     	<module platform="android">com.example.timod</module>
     	<module platform="android">fh.imagefactory</module>
-    	<module platform="android">ImageAsResized-master</module>
+    	<module platform="android">ImageAsResized</module>
     </modules>
     <deployment-targets>
         <target device="android">true</target>
