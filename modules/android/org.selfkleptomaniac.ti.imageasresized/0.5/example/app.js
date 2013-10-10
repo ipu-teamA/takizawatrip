@@ -1,5 +1,4 @@
 // this sets the background color of the master UIView (when there are no windows/tab groups on it)
-var image_module = require('org.selfkleptomaniac.ti.imageasresized');
 Titanium.UI.setBackgroundColor('#000');
 
 // create tab group
@@ -57,23 +56,6 @@ var label2 = Titanium.UI.createLabel({
 	width:'auto'
 });
 
-//3264x2448
-var tmp_image = image_module.imageAsResized(3264/24, 2448/24, '/images/test.jpg', 0);
-Ti.API.info("debug:" + tmp_image.width);
-Ti.API.info("debug:" + tmp_image.height);
-var p = Ti.Filesystem.applicationDataDirectory + 'hoge.jpg';
-var f = Ti.Filesystem.getFile(p);
-f.write(tmp_image);
-test_image = Ti.UI.createImageView({
-  image: p
-});
-//win2.add(test_image);
-var xhr = Ti.Network.createHTTPClient();
-xhr.onload = function(){Ti.API.info("ok");};
-xhr.onerror = function(){Ti.API.info("error");};
-xhr.open('POST', 'http://dev.voidoid.com/video/images');
-//xhr.send({"image[file]": tmp_image});
-
 label2.addEventListener('click', function(e){
 	//var camera = Ti.Media.showCamera({
   var limit = 1024 * 1024 * 1;
@@ -95,14 +77,13 @@ label2.addEventListener('click', function(e){
       //});
 
 			var resized_image = e.media;
-      var rate = 12;
-      var width = e.cropRect.width / rate;
-      var height = e.cropRect.height / rate;
+			var image_module = require('org.selfkleptomaniac.ti.imageasresized');
+      var width = 900;
+      var height = 600;
       resized_image = image_module.cameraImageAsResized(resized_image, width, height, 0);
-      xhr.send({"image[name]": width + ":" + e.cropRect.width, "image[file]": resized_image});
 //			var camera_data = image_module.cameraImageAsResized(media , w, h, 0);
 //			Ti.API.info(JSON.stringify(camera_data));
-			var camera_image = Ti.UI.createImageView({image:resized_image, canScale:true, height:height, width: width});
+			var camera_image = Ti.UI.createImageView({image:resized_image, height:height/10, width: width/10});
 			wrap2.add(camera_image);
 		},
 		error:function(e){alert('failed');},
@@ -134,7 +115,6 @@ wrap.add(image_orig);
 
 var androimage = require('org.selfkleptomaniac.ti.imageasresized');
 var image_data = androimage.imageAsResized(width, height, "images/boy.jpg", 0);
-//xhr.send({"image[file]": image_data});
 var rotated_image_data = androimage.imageAsResized(width, height, "/images/boy.jpg", 90);
 var sd_card_image = androimage.imageAsResized(width, height, sd_file.nativePath, 0);
 //var sd_card_image = androimage.imageAsResized(width, height, Ti.Filesystem.applicationDataDirectory + 'tmp.jpg', 0);

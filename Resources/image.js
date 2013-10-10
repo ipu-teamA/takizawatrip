@@ -52,7 +52,6 @@ win.add(header);
 function selectPhotosByLocation(targetLat, targetLon, targetDistance) {
 	var findfile = require('com.example.timod');
 	var ImageFactory = require("fh.imagefactory");
-	var ImageAsResized = require("ImageAsResized");
 	var list = findfile.get_all_filelist();
 	var exifTags = {
 		'Date/time' : ImageFactory.TAG_DATETIME,
@@ -111,7 +110,8 @@ function selectPhotosByLocation(targetLat, targetLon, targetDistance) {
 			// 連想配列として写真(blob型)、緯度経度を格納
 			Ti.API.info(list[i]);
 			exifPhotos.push({
-				image : ImageAsResized.imageAsResized(300, 400, "file://" + list[i], 0),
+				// image : ImageAsResized.imageAsResized(300, 400, "file:///" + list[i], 0),
+				path : "file:///" + list[i],
 				lat : geoLat,
 				lon : geoLon
 			});
@@ -133,12 +133,13 @@ function selectPhotosByLocation(targetLat, targetLon, targetDistance) {
 
 var range = 0.01; // 要変更、今は約半径１キロ
 var check = selectPhotosByLocation(lat, lon, range); // 候補画像を取得しcheckへ格納
-Ti.API.info(check.length);
 for(var i = 0; i < check.length; i++){
-	Ti.API.info(check[i].image);
+	Ti.API.info("List");
+	Ti.API.info(check[i].path);
 	Ti.API.info(check[i].lat);
 	Ti.API.info(check[i].lon);
 }
+var ImageAsResized = require('org.selfkleptomaniac.ti.imageasresized');
 //ソート関数
 check.sort(
 	function(a, b){
@@ -154,18 +155,16 @@ var image = [];
 if(check.length){
 for(var i = 0; i < check.length && i < 5; i++){
     image[i] = Ti.UI.createImageView({
-   		image: check[i].image,
+   		image: ImageAsResized.imageAsResized(300, 400, check[i].path, 0),
         width: '50%',
-        height:'50%',
+        height:'auto',
         image_id: i,
     });
-    image[i] = check[i].image;
     row_view[i] = Ti.UI.createView();
     row_view[i].add(image[i]);
     tablerow[i] = Ti.UI.createTableViewRow();
 	tablerow[i].add(row_view[i]);
 	table.appendRow(tablerow[i]);
-    Ti.API.info(check[i].image);
     image[i].addEventListener('click', function(e)
     {
     	var httpclient = Ti.Network.createHTTPClient();
