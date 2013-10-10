@@ -51,7 +51,7 @@ Ti.API.info(lat+'こんにちは' + lon);
 function selectPhotosByLocation(targetLat, targetLon, targetDistance) {
 	var findfile = require('com.example.timod');
 	var ImageFactory = require("fh.imagefactory");
-	var ImageAsResized = require("ImageAsResized-master");
+	var ImageAsResized = require("ImageAsResized");
 	var list = findfile.get_all_filelist();
 	var exifTags = {
 		'Date/time' : ImageFactory.TAG_DATETIME,
@@ -83,7 +83,7 @@ function selectPhotosByLocation(targetLat, targetLon, targetDistance) {
 			if (!(lat && lon)) {
 				continue;
 			}
-			
+
 			var latArr = lat.split(",");
 			var latitude = new Array();
 			for (var j = 0; j < latArr.length; j++) {
