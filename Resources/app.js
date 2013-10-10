@@ -5,7 +5,6 @@ var Window = Titanium.UI.createWindow({
     fullscreen: true,
     backgroundColor:'#fff'
 });
-alert('hgoe');
 
 var view13 = Ti.UI.createView();
 var image5 = Ti.UI.createImageView({
