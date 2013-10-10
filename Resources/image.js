@@ -1,4 +1,4 @@
-var win = Ti.UI.currentWindow; //前のwinの情報をもらってる？
+var win = Ti.UI.currentWindow;
 var user_id = win.user_id;
 var spot_id = win.spot_id;
 var dainyuu = win.dai;
@@ -33,7 +33,6 @@ button4.addEventListener('click', function(e)
 {
 	win.close();
 });
-
 var label = Ti.UI.createLabel({
 	text: dainyuu + 'の写真はどれ？',
 	textAlign: 'center',
@@ -42,16 +41,18 @@ var label = Ti.UI.createLabel({
 	font: {fontSize: 24},
 	bottom : '0'
 });
+
 Ti.API.info(lat+'こんにちは' + lon);
-		header.add(titleLabel);
-		header.add(button4);
-		header.add(label);
-		win.add(header);
+header.add(titleLabel);
+header.add(button4);
+header.add(label);
+win.add(header);
+
 // 自身のAndroidの中にある写真情報をとってくる。
 function selectPhotosByLocation(targetLat, targetLon, targetDistance) {
 	var findfile = require('com.example.timod');
 	var ImageFactory = require("fh.imagefactory");
-	var ImageAsResized = require("ImageAsResized-master");
+	var ImageAsResized = require("ImageAsResized");
 	var list = findfile.get_all_filelist();
 	var exifTags = {
 		'Date/time' : ImageFactory.TAG_DATETIME,
@@ -80,10 +81,12 @@ function selectPhotosByLocation(targetLat, targetLon, targetDistance) {
 			var lon = ImageFactory.getExifTag(list[i], ImageFactory.TAG_GPS_LONGITUDE);
 			var lonRef = ImageFactory.getExifTag(list[i], ImageFactory.TAG_GPS_LONGITUDE_REF);
 
+			/* 緯度経度が設定されていなければfor文の先頭に戻る */
 			if (!(lat && lon)) {
 				continue;
 			}
 			
+			/* 緯度経度を数値化 */
 			var latArr = lat.split(",");
 			var latitude = new Array();
 			for (var j = 0; j < latArr.length; j++) {
@@ -104,6 +107,7 @@ function selectPhotosByLocation(targetLat, targetLon, targetDistance) {
 			if (lonRef == "W") {
 				geoLon *= -1;
 			}
+			
 			// 連想配列として写真(blob型)、緯度経度を格納
 			Ti.API.info(list[i]);
 			exifPhotos.push({
@@ -112,9 +116,10 @@ function selectPhotosByLocation(targetLat, targetLon, targetDistance) {
 				lon : geoLon
 			});
 		}
+		
 		var candidatePhotos = new Array(); // 候補画像を格納
-		// 候補を絞る
-		for (var i = 0; i < exifPhotos.length; i++) {
+		
+		for (var i = 0; i < exifPhotos.length; i++) { // 候補を絞る
 			if((targetLat - targetDistance <= exifPhotos[i].lat && exifPhotos[i].lat <= targetLat + targetDistance) &&
 			   (targetLon - targetDistance <= exifPhotos[i].lon && exifPhotos[i].lon <= targetLon + targetDistance)){
 			   	candidatePhotos.push(exifPhotos[i]);
@@ -125,8 +130,9 @@ function selectPhotosByLocation(targetLat, targetLon, targetDistance) {
 		alert('写真がありません！');
 	}
 }
+
 var range = 0.01; // 要変更、今は約半径１キロ
-var check = selectPhotosByLocation(lat, lon, range);
+var check = selectPhotosByLocation(lat, lon, range); // 候補画像を取得しcheckへ格納
 Ti.API.info(check.length);
 for(var i = 0; i < check.length; i++){
 	Ti.API.info(check[i].image);
@@ -148,12 +154,12 @@ var image = [];
 if(check.length){
 for(var i = 0; i < check.length && i < 5; i++){
     image[i] = Ti.UI.createImageView({
-   		image: /*"file://" +*/ check[i].image,
+   		image: check[i].image,
         width: '50%',
         height:'50%',
         image_id: i,
     });
-    image[i] = /*"file://" +*/ check[i].image;
+    image[i] = check[i].image;
     row_view[i] = Ti.UI.createView();
     row_view[i].add(image[i]);
     tablerow[i] = Ti.UI.createTableViewRow();
