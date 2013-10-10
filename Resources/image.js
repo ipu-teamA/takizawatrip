@@ -83,6 +83,7 @@ function selectPhotosByLocation(targetLat, targetLon, targetDistance) {
 			if (!(lat && lon)) {
 				continue;
 			}
+			
 			var latArr = lat.split(",");
 			var latitude = new Array();
 			for (var j = 0; j < latArr.length; j++) {
@@ -103,9 +104,10 @@ function selectPhotosByLocation(targetLat, targetLon, targetDistance) {
 			if (lonRef == "W") {
 				geoLon *= -1;
 			}
-			// 連想配列として写真へのパス、緯度経度を格納
+			// 連想配列として写真(blob型)、緯度経度を格納
+			Ti.API.info(list[i]);
 			exifPhotos.push({
-				path : ImageAsResized.imageAsResized(300, 400, list[i], 0),
+				image : ImageAsResized.imageAsResized(300, 400, "file://" + list[i], 0),
 				lat : geoLat,
 				lon : geoLon
 			});
@@ -127,7 +129,7 @@ var range = 0.01; // 要変更、今は約半径１キロ
 var check = selectPhotosByLocation(lat, lon, range);
 Ti.API.info(check.length);
 for(var i = 0; i < check.length; i++){
-	Ti.API.info(check[i].path);
+	Ti.API.info(check[i].image);
 	Ti.API.info(check[i].lat);
 	Ti.API.info(check[i].lon);
 }
@@ -142,22 +144,22 @@ check.sort(
 var tablerow = [];
 var row_view = [];
 var image = [];
-var path = [];
+var image = [];
 if(check.length){
 for(var i = 0; i < check.length && i < 5; i++){
     image[i] = Ti.UI.createImageView({
-   		image: /*"file://" +*/ check[i].path,
-        width: '100%',
-        height:'200px',
+   		image: /*"file://" +*/ check[i].image,
+        width: '50%',
+        height:'50%',
         image_id: i,
     });
-    path[i] = /*"file://" +*/ check[i].path;
+    image[i] = /*"file://" +*/ check[i].image;
     row_view[i] = Ti.UI.createView();
     row_view[i].add(image[i]);
-    tablerow[i] = Ti.UI.createTableViewRow({});
+    tablerow[i] = Ti.UI.createTableViewRow();
 	tablerow[i].add(row_view[i]);
 	table.appendRow(tablerow[i]);
-    Ti.API.info(check[i].path);
+    Ti.API.info(check[i].image);
     image[i].addEventListener('click', function(e)
     {
     	var httpclient = Ti.Network.createHTTPClient();

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ti:app xmlns:ti="http://ti.appcelerator.org">
+<?xml version="1.0" encoding="UTF-8"?><ti:app xmlns:ti="http://ti.appcelerator.org">
     <id>com.maita</id>
     <name>takizawatrip_master</name>
     <version>1.0</version>
@@ -37,7 +36,11 @@
         </splash>
         <theme>default</theme>
     </mobileweb>
-    <modules/>
+    <modules>
+    	<module>com.example.timod</module>
+    	<module>fh.imagefactory</module>
+    	<module>ImageAsResized-master</module>
+    </modules>
     <deployment-targets>
         <target device="android">true</target>
         <target device="blackberry">false</target>
@@ -46,5 +49,5 @@
         <target device="mobileweb">true</target>
         <target device="tizen">false</target>
     </deployment-targets>
-    <sdk-version>3.1.1.GA</sdk-version>
-</ti:app>
+    <sdk-version>3.1.2.GA</sdk-version>
+<property name="ti.deploytype">test</property></ti:app>
