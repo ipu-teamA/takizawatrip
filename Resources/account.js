@@ -59,33 +59,35 @@ var win = Ti.UI.currentWindow;
 			var new_user = JSON.parse(this.responseText);
 			var new_user_id = new_user.user_id;
 			if(new_user_id == "error"){
-				alert("エラー");
+				alert("すでに登録されているユーザー名です。");
 			}
 			else{
-			Ti.App.Properties.setInt('id', new_user_id); //登録したユーザーのidを端末登録
-			var id = Ti.App.Properties.getInt('id'); //端末に登録したidの呼び出し
-			}
-			var labelNewUserid = Titanium.UI.createLabel({
-				text:new_user_id,
-				font:{fontSize:20,fontFamily:'Helvetica Neue'},
-				textAlign:'center',
-				width:'auto'
-			});
-			Ti.API.info(labelNewUserid);
+				Ti.App.Properties.setInt('id', new_user_id); //登録したユーザーのidを端末登録
+				var id = Ti.App.Properties.getInt('id'); //端末に登録したidの呼び出し
+			
+				var labelNewUserid = Titanium.UI.createLabel({
+					text:new_user_id,
+					font:{fontSize:20,fontFamily:'Helvetica Neue'},
+					textAlign:'center',
+					width:'auto'
+				});
+				Ti.API.info(labelNewUserid);
 			//win2.add(labelNewUserid);
+				var id = Ti.App.Properties.getInt('id');
+				var main_win = Titanium.UI.createWindow({
+					url:'takizawa_trip.js',
+					user_id:id
+				});
+		
+				Ti.API.info("id::::"+ id);
+		
+				if(id != null){
+					main_win.open();
+				}
+			}
 		}
 		account.send();
-		var id = Ti.App.Properties.getInt('id');
-		var main_win = Titanium.UI.createWindow({
-			url:'takizawa_trip.js',
-			user_id:id
-		});
 		
-		Ti.API.info("id::::"+ id);
-		
-		if(id != null){
-		main_win.open();
-		}
 	});
 	//戻るボタンが押された時の処理
 	button4.addEventListener('click', function(e){
