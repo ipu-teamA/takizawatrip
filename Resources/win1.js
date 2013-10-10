@@ -50,6 +50,7 @@ var spot = {} ;
 									spot[i] = Ti.Map.createAnnotation({
 										latitude : spots[i].spot_gps_lat, // 緯度
 										longitude : spots[i].spot_gps_lon, // 経度
+										subtitle:spots[i].area_name + "エリア",
 										title : spots[i].spot_name,
 										animate : true,
 										pincolor : Titanium.Map.ANNOTATION_RED, // ピン色は指定なしだとiOS[RED], Android[BLUE]
@@ -61,6 +62,7 @@ var spot = {} ;
 							spot[i] = Ti.Map.createAnnotation({
 								latitude : spots[i].spot_gps_lat, // 緯度
 								longitude : spots[i].spot_gps_lon, // 経度
+								subtitle:spots[i].area_name + "エリア",
 								title : spots[i].spot_name,
 								animate : true,
 								pincolor : Titanium.Map.ANNOTATION_RED, // ピン色は指定なしだとiOS[RED], Android[BLUE]
