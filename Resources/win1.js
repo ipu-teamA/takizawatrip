@@ -74,7 +74,7 @@ var spot = {} ;
 					};
 				}
 				main.send();
-			})(); 
+			})();
 
 	}
 
@@ -122,7 +122,9 @@ longitude: longitude,
 mapView.add(map); // mapViewにmapをadd
 Titanium.Geolocation.addEventListener('location',function(e)
 {
-    //alert("latitude");
+    /*
+     alert("latitude");
+*/
     if (e.error)
     {
         // manage the error
