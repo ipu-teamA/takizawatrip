@@ -82,6 +82,7 @@ var win = Ti.UI.currentWindow;
 				Ti.API.info("id::::"+ id);
 		
 				if(id != null){
+					user_id:id
 					main_win.open();
 				}
 			}

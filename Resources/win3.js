@@ -1,18 +1,22 @@
 var win = Ti.UI.currentWindow;
 var user_id = win.user_id;
 Ti.API.user_id = user_id;
+//alert("user_id: "+ Ti.API.user_id);
 var path = "http://www31092u.sakura.ne.jp/~g031i043/takizawa/picture/";
 var no_image_path = "http://www31092u.sakura.ne.jp/~g031i043/takizawa/picture/NoImage.jpg";
+
 var photoList = Ti.UI.createWindow({
   backgroundColor: 'white',
   exitOnClose: true,
   fullscreen: false,
   title: 'photo list'
 });
+
 var increase = Ti.UI.createWindow({
     backgroundColor: 'black',
     title: 'increase'
 });
+
 var view3 = Ti.UI.createView({
     height: '100%',
     width : '100%'
@@ -42,8 +46,6 @@ var titleLabel4 = Ti.UI.createLabel({
     color: 'white',
     font: {fontSize: 24}
 });
-
-
 
 var scrollView = Ti.UI.createScrollView({
 
@@ -75,23 +77,18 @@ var view12 = Ti.UI.createView({
 
 });
 
-
-
 view12.add(titleLabel4);
 
 var photo = [];
 
 var label = [];
 
-
-
 scrollView.add(view3);
-
-
 
 (function() {
 	var picture = Ti.Network.createHTTPClient();
 	var url = "http://www31092u.sakura.ne.jp/~g031i043/takizawa/picture.php/" + Ti.API.user_id;
+	Ti.API.info(url);
 	picture.open("GET", url);
 	picture.setRequestHeader('Content-type', 'application/json; charset=utf-8');
 	picture.onload = function() {
@@ -123,7 +120,9 @@ scrollView.add(view3);
 						if (my_picture.length != 0) {
 							for (var x = 0; x < my_picture.length; x++) {
 								if (spots[i * 3 + j].spot_name == my_picture[x].spot_name) {
-									pic_path[i * 3 + j] = path + my_picture[i * 3 + j].picture_path;
+									//pic_path[i * 3 + j] = path + my_picture[i * 3 + j].picture_path;
+									pic_path[i * 3 + j] = path + my_picture[x].picture_path;
+									Ti.API.info("pic_path: " + pic_path[i * 3 + j]);
 									photo[i * 3 + j] = Ti.UI.createImageView({
 										image : pic_path[i * 3 + j],
 										width : '90',
@@ -133,6 +132,7 @@ scrollView.add(view3);
 										id : i * 3 + j,
 										image_name : spots[i * 3 + j].spot_name//my_picture[i * 3 + j].picture_path
 									});
+									Ti.API.info("abcdef" + pic_path[i * 3 + j]);
 									break;
 								}
 								photo[i * 3 + j] = Ti.UI.createImageView({
@@ -181,7 +181,7 @@ scrollView.add(view3);
 								label[i * 3 + j].right = '6.0%';
 								break;
 						}
-						scrollView.add(photo[i * 3 + j]);
+						scrollView.add(photo[i * 3 + j]);　　
 						scrollView.add(label[i * 3 + j]);
 						photo[i * 3 + j].addEventListener('click', function(e) {
 							var detail_pic = Titanium.UI.createWindow({
@@ -190,10 +190,8 @@ scrollView.add(view3);
 								pic_path : photo[e.source.id].image,
 								pic_name : label[e.source.id].text,
 								user_id : user_id
-							});
-
-							detail_pic.open();
-
+								});
+								detail_pic.open();
 						});
 					}
 				}

@@ -109,8 +109,8 @@ button2.addEventListener('click', function(e){
 }
 else{
 	var main_win = Titanium.UI.createWindow({
-     url:'takizawa_trip.js'
-     //user_id:id
+     url:'takizawa_trip.js',
+     user_id:id
     });
     main_win.open();
 }

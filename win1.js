@@ -1,6 +1,5 @@
 //win1の内容を記述
 //地図の情報を記述
-
 var win = Ti.UI.currentWindow; //前のwinの情報をもらってる？
 var user_id = win.user_id;
 // Google Mapsを表示するView[mapView]を生成
@@ -64,13 +63,12 @@ longitude: longitude,
 });
    map.addAnnotation(currentPos);
 */
-
-        　　 map.show(); // 隠していた地図を表示する
-            map.setLocation({   // 現在地まで地図をスクロールする
-            latitude:latitude,
-            longitude:longitude,
-            latitudeDelta:0.01,
-            longitudeDelta:0.01
+	map.show(); // 隠していた地図を表示する
+	map.setLocation({   // 現在地まで地図をスクロールする
+	latitude:latitude,
+	longitude:longitude,
+	latitudeDelta:0.01,
+	longitudeDelta:0.01
             });
 });
 

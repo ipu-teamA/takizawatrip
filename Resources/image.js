@@ -1,6 +1,7 @@
 var win = Ti.UI.currentWindow;
 var user_id = win.user_id;
 var spot_id = win.spot_id;
+alert(spot_id);
 var dainyuu = win.dai;
 var lat = win.latitude;
 var lon = win.longitude;
@@ -10,6 +11,8 @@ var header = Ti.UI.createView({
   width: '100%',
   height: '10%'
 });
+//alert(user_id);
+
 var titleLabel = Ti.UI.createLabel({
     text: '写真選択',
     textAlign: 'center',
@@ -169,6 +172,7 @@ for(var i = 0; i < check.length && i < 5; i++){
     {
     	var httpclient = Ti.Network.createHTTPClient();
     	httpclient.open("POST", "http://www31092u.sakura.ne.jp/~g031i043/takizawa/add_picture.php/" + user_id + "/aaaaa/" + spot_id);
+    	Ti.API.info("http://www31092u.sakura.ne.jp/~g031i043/takizawa/add_picture.php/" + user_id + "/aaaaa/" + spot_id);
     	httpclient.onload = function(e){
     		Ti.API.info(this.responseText);
 			alert(dainyuu + 'チェックインしました');
@@ -183,7 +187,7 @@ for(var i = 0; i < check.length && i < 5; i++){
     });
 }
 win.add(table);
-Ti.API.info("win1.user_id" + user_id);
+Ti.API.info("win1.user_id: " + user_id);
 }else{
 	alert('スポット近くの写真がありません！');
 }

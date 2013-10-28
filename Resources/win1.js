@@ -5,7 +5,7 @@ var win = Ti.UI.currentWindow; //前のwinの情報をもらってる？
 var user_id = win.user_id;
 // Google Mapsを表示するView[mapView]を生成
 var mapView = Ti.UI.createView();
-
+//alert(user_id);
 //スポット情報の挿入
 var spot = {} ;
 (function() {
@@ -41,6 +41,7 @@ var spot = {} ;
 										longitude : spots[i].spot_gps_lon, // 経度
 										subtitle:spots[i].area_name + "エリア",
 										title : spots[i].spot_name,
+										spot_id:spots[i].spot_id, //ここを付け加えた10／２４
 										animate : true,
 										pincolor : Titanium.Map.ANNOTATION_GREEN, // ピン色は指定なしだとiOS[RED], Android[BLUE]
 										bubbleParent : false,
@@ -52,6 +53,7 @@ var spot = {} ;
 										longitude : spots[i].spot_gps_lon, // 経度
 										subtitle:spots[i].area_name + "エリア",
 										title : spots[i].spot_name,
+										spot_id:spots[i].spot_id, //ここを付け加えた10／２４
 										animate : true,
 										pincolor : Titanium.Map.ANNOTATION_RED, // ピン色は指定なしだとiOS[RED], Android[BLUE]
 										bubbleParent : false,
@@ -64,6 +66,7 @@ var spot = {} ;
 								longitude : spots[i].spot_gps_lon, // 経度
 								subtitle:spots[i].area_name + "エリア",
 								title : spots[i].spot_name,
+								spot_id:spots[i].spot_id, //ここを付け加えた10／２４
 								animate : true,
 								pincolor : Titanium.Map.ANNOTATION_RED, // ピン色は指定なしだとiOS[RED], Android[BLUE]
 								bubbleParent : false,
@@ -147,7 +150,7 @@ Titanium.Geolocation.addEventListener('location',function(e)
     */
 });
 
-
+ //alert(user_id);
  map.addEventListener('click', function(e){
     // ピンのタイトルをタップしたときに画面表示
   Ti.API.info('click');
@@ -156,6 +159,7 @@ Titanium.Geolocation.addEventListener('location',function(e)
     Ti.API.info(e.latitude + '緯度');
     Ti.API.info(e.longitude + '経度');
     Ti.API.info(e.annotation.spot_id);//この場合はannotationでスポットIDを得られる
+    Ti.API.info(e.spot_id);//この場合はannotationでスポットIDを得られる
     var lat = e.latitude;// 緯度
     var lon = e.longitude;// 経度
    var imageSelect = Ti.UI.createWindow({
